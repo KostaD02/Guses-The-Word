@@ -1,0 +1,109 @@
+@media screen and (max-width: 980px) {
+  main section.game-container {
+    padding: 10px;
+    grid-template-rows: 80px 1fr 170px;
+  }
+
+  main section.game-container ul.keyboard ul.line li.char,
+  main
+    section.game-container
+    ul.words-display
+    ul.words-container
+    li.words-char {
+    width: 25px;
+    height: 25px;
+    font-size: 25px;
+  }
+}
+
+@media screen and (max-width: 725px) {
+  main section.game-container ul.keyboard ul.line li.char,
+  main
+    section.game-container
+    ul.words-display
+    ul.words-container
+    li.words-char {
+    width: 16px;
+    height: 16px;
+    font-size: 20px;
+  }
+}
+
+@media screen and (max-width: 630px) {
+  main section.game-container ul.keyboard ul.line {
+    gap: 0.5rem;
+  }
+
+  main section.game-container ul.keyboard,
+  main section.game-container ul.words-display {
+    gap: 0.5rem;
+  }
+
+  main section.game-container div.controls div.general,
+  main section.game-container div.controls div.mode {
+    flex-wrap: wrap;
+    gap: 0.3rem;
+  }
+
+  main section.game-container ul.keyboard ul.line li.char,
+  main
+    section.game-container
+    ul.words-display
+    ul.words-container
+    li.words-char {
+    width: 16px;
+    height: 16px;
+    font-size: 20px;
+  }
+}
+
+@media screen and (max-width: 630px) {
+  main section.game-container {
+    grid-template-rows: 80px 1fr 140px;
+  }
+
+  main section.game-container ul.keyboard ul.line {
+    gap: 0.3rem;
+  }
+
+  main section.game-container ul.keyboard,
+  main section.game-container ul.words-display {
+    gap: 0.3rem;
+  }
+}
+
+@media screen and (max-width: 475px) {
+  main section.game-container ul.keyboard ul.line li.char,
+  main
+    section.game-container
+    ul.words-display
+    ul.words-container
+    li.words-char {
+    width: 10px;
+    height: 10px;
+    font-size: 16px;
+  }
+}
+
+@media screen and (max-width: 420px) {
+  main section.game-container {
+    grid-template-rows: 115px 1fr 100px;
+  }
+
+  main section.game-container div.controls div.mode div.actions {
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    gap: 0.5rem;
+  }
+
+  main section.game-container ul.keyboard ul.line li.char,
+  main
+    section.game-container
+    ul.words-display
+    ul.words-container
+    li.words-char {
+    padding: 7px;
+  }
+}

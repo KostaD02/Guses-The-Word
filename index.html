@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>გამოიცანი სიტყვა</title>
+    <meta name="title" content="გამოიცანი სიტყვა" />
+    <meta
+      name="description"
+      content="მარტივი თამაში ქართული სიტყვების გამოსაცნობად"
+    />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:url"
+      content="https://kostad02.github.io/Guses-The-Word"
+    />
+    <meta property="og:title" content="გამოიცანი სიტყვა" />
+    <meta
+      property="og:description"
+      content="მარტივი თამაში ქართული სიტყვების გამოსაცნობად"
+    />
+    <meta
+      property="og:image"
+      content="https://raw.githubusercontent.com/KostaD02/Guses-The-Word/main/assets/images/bg.jpg"
+    />
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta
+      property="twitter:url"
+      content="https://kostad02.github.io/Guses-The-Word"
+    />
+    <meta property="twitter:title" content="გამოიცანი სიტყვა" />
+    <meta
+      property="twitter:description"
+      content="მარტივი თამაში ქართული სიტყვების გამოსაცნობად"
+    />
+    <meta
+      property="twitter:image"
+      content="https://raw.githubusercontent.com/KostaD02/Guses-The-Word/main/assets/images/bg.jpg"
+    />
+    <link rel="stylesheet" href="./assets/styles/fonts.css" />
+    <link rel="stylesheet" href="./assets/styles/style.css" />
+    <link rel="stylesheet" href="./assets/styles/responsive.css" />
+    <link
+      rel="shortcut icon"
+      href="https://raw.githubusercontent.com/KostaD02/konstantinedatunishvili.com/main/src/assets/icons/favicon.ico"
+      type="image/x-icon"
+    />
+  </head>
+  <body>
+    <main>
+      <section class="game-container">
+        <div class="controls">
+          <div class="general">
+            <button class="clear" data-action="clear">
+              ისტორიის გასუფთავება
+            </button>
+            <button class="start" data-action="start">თავიდან დაწყება</button>
+          </div>
+          <div class="mode">
+            <h4>არჩეული რეჟიმი: <span id="mode-display">მარტივი</span></h4>
+            <div class="actions">
+              <button class="easy" data-mode="easy">მარტივი</button>
+              <button class="medium" data-mode="medium">საშუალო</button>
+              <button class="hard" data-mode="hard">რთული</button>
+              <button class="info" data-action="info">ინფორმაცია</button>
+            </div>
+          </div>
+        </div>
+        <ul class="words-display"></ul>
+        <ul class="keyboard"></ul>
+      </section>
+    </main>
+    <script src="./assets/scripts/sweetalert2.js"></script>
+    <script src="./assets/scripts/word-list.js"></script>
+    <script src="./assets/scripts/main.js"></script>
+  </body>
+</html>
