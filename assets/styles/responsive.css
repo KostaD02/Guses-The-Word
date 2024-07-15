@@ -1,7 +1,19 @@
 @media screen and (max-width: 980px) {
+  main {
+    width: 100%;
+    max-width: 100%;
+    padding: 0;
+  }
+
   main section.game-container {
-    padding: 10px;
+    height: 100%;
+    width: 100%;
+    padding: 0 10px;
     grid-template-rows: 80px 1fr 170px;
+  }
+
+  main section.game-container ul.words-display {
+    max-height: 100%;
   }
 
   main section.game-container ul.keyboard ul.line li.char,
@@ -73,6 +85,13 @@
 }
 
 @media screen and (max-width: 475px) {
+  main section.game-container {
+    padding: 0 5px;
+  }
+  main section.game-container ul.words-display {
+    padding: 10px 0;
+  }
+
   main section.game-container ul.keyboard ul.line li.char,
   main
     section.game-container
@@ -96,14 +115,5 @@
     align-items: center;
     align-content: center;
     gap: 0.5rem;
-  }
-
-  main section.game-container ul.keyboard ul.line li.char,
-  main
-    section.game-container
-    ul.words-display
-    ul.words-container
-    li.words-char {
-    padding: 7px;
   }
 }

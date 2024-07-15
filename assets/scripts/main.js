@@ -17,7 +17,7 @@
     keys: [
       ["ქ", "წ", "ე", "რ", "ტ", "ყ", "უ", "ი", "ო", "პ", "ძ"],
       ["ა", "ს", "დ", "ფ", "გ", "ჰ", "ჯ", "კ", "ლ", "თ", "ჭ"],
-      ["ზ", "ხ", "ც", "ვ", "ბ", "ნ", "მ"],
+      ["ზ", "ხ", "ც", "ვ", "ბ", "ნ", "მ", "შ"],
     ],
     keyMap: {
       q: "ქ",
@@ -49,6 +49,7 @@
       W: "ჭ",
       T: "თ",
       Z: "ძ",
+      S: "შ",
     },
     words: getWordList(WORLD_LIST),
     colors: {
@@ -326,6 +327,11 @@
     config.stopGame = false;
     config.currentLine = 0;
     config.currentWord = "";
+    const displayedChars = document.querySelectorAll("li.char");
+    displayedChars.forEach((char) => {
+      char.removeAttribute("style");
+      char.classList.remove("missed");
+    });
     let randomWord = getRandomWord(config.words);
 
     while (config.prevWords.includes(randomWord)) {
