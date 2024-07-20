@@ -59,6 +59,15 @@ button.start:focus {
   background-color: rgb(123, 0, 255);
 }
 
+button.show {
+  background-color: rgba(55, 83, 194, 0.5);
+}
+
+button.show:hover,
+button.show:focus {
+  background-color: rgb(55, 83, 194);
+}
+
 button.easy {
   background-color: rgba(0, 175, 0, 0.5);
 }
@@ -109,16 +118,17 @@ main {
 
 main section.game-container {
   width: fit-content;
-  height: 80%;
+  height: 90%;
   padding: 25px;
   box-shadow: rgba(0, 0, 0, 0.35) 0 2px 7px;
   background-color: white;
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 80px 1fr 260px;
+  grid-template-rows: 80px 1fr 320px;
   border-radius: 3px;
   gap: 1rem;
   overflow-x: auto;
+  box-sizing: border-box;
 }
 
 main section.game-container div.controls {
@@ -159,7 +169,7 @@ main section.game-container ul.keyboard {
 }
 
 main section.game-container ul.words-display {
-  max-height: calc(80vh - 220px);
+  max-height: calc(80vh - 80px - 220px - 10px);
   overflow-y: auto;
   box-shadow: 0 0 4px #999;
   background-color: transparent;

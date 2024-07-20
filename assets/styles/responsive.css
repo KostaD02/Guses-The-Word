@@ -9,7 +9,7 @@
     height: 100%;
     width: 100%;
     padding: 0 10px;
-    grid-template-rows: 80px 1fr 170px;
+    grid-template-rows: 80px 1fr 200px;
   }
 
   main section.game-container ul.words-display {
@@ -71,7 +71,7 @@
 
 @media screen and (max-width: 630px) {
   main section.game-container {
-    grid-template-rows: 80px 1fr 140px;
+    grid-template-rows: 80px 1fr 200px;
   }
 
   main section.game-container ul.keyboard ul.line {
@@ -106,7 +106,7 @@
 
 @media screen and (max-width: 420px) {
   main section.game-container {
-    grid-template-rows: 115px 1fr 100px;
+    grid-template-rows: 115px 1fr 200px;
   }
 
   main section.game-container div.controls div.mode div.actions {

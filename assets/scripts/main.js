@@ -8,16 +8,19 @@
   const config = {
     prevWords: [],
     stopGame: false,
+    showingAnswer: false,
     currentLine: 0,
     currentWord: "",
     maxTry: Infinity,
+    delayForCharInput: 1000,
     chars: {
       delete: "&#8592;",
     },
     keys: [
-      ["ქ", "წ", "ე", "რ", "ტ", "ყ", "უ", "ი", "ო", "პ", "ძ"],
-      ["ა", "ს", "დ", "ფ", "გ", "ჰ", "ჯ", "კ", "ლ", "თ", "ჭ"],
+      ["ქ", "წ", "ე", "რ", "ტ", "ყ", "უ", "ი", "ო", "პ"],
+      ["ა", "ს", "დ", "ფ", "გ", "ჰ", "ჯ", "კ", "ლ"],
       ["ზ", "ხ", "ც", "ვ", "ბ", "ნ", "მ", "შ"],
+      ["ჩ", "ჟ", "ღ", "ჭ", "ძ", "თ"],
     ],
     keyMap: {
       q: "ქ",
@@ -50,6 +53,9 @@
       T: "თ",
       Z: "ძ",
       S: "შ",
+      J: "ჟ",
+      R: "ღ",
+      C: "ჩ",
     },
     words: getWordList(WORLD_LIST),
     colors: {
@@ -100,6 +106,14 @@
       const action = this.getAttribute("data-action");
       switch (action) {
         case "clear": {
+          if (config.stopGame) {
+            displayAlert(
+              "პასუხი უკვე იცი",
+              "info",
+              "დააჭირე 'თავიდან დაწყებას' ან აირჩიე რომელიმე რეჟიმი"
+            );
+            break;
+          }
           actionClear();
           break;
         }
@@ -108,7 +122,27 @@
           break;
         }
         case "start": {
+          if (config.showingAnswer) {
+            displayToast("დამთავრდეს ჯერ პასუხის ჩვენება", "warning", "orange");
+            break;
+          }
           initGame();
+          break;
+        }
+        case "show": {
+          if (config.stopGame) {
+            displayAlert(
+              "პასუხი უკვე იცი",
+              "info",
+              "დააჭირე 'თავიდან დაწყებას' ან აირჩიე რომელიმე რეჟიმი"
+            );
+            break;
+          }
+          showAnswer();
+          break;
+        }
+        default: {
+          displayAlert("ქმედება ვერ მოიძებნა", "error");
           break;
         }
       }
@@ -144,6 +178,9 @@
           }
         });
         li.setAttribute("tabindex", "0");
+        li.setAttribute("role", "button");
+        li.setAttribute("aria-label", char);
+        li.setAttribute("aria-pressed", "false");
         ul.appendChild(li);
       });
       keyboardDisplay.appendChild(ul);
@@ -183,6 +220,8 @@
       currentContainer.children[index - 1].textContent = "";
       return;
     }
+
+    this.setAttribute("aria-pressed", "true");
 
     const currentContainer = wordsDisplay.children[config.currentLine];
     let index = 0;
@@ -229,24 +268,18 @@
           ? config.colors.success
           : config.colors.wrongPlace;
       currentContainer.children[index - 1].style.backgroundColor = color;
-      document.querySelectorAll("li.char").forEach((charRef) => {
-        if (charRef.textContent === currentChar) {
-          charRef.style.backgroundColor = color;
-          if (color === config.colors.missed) {
-            charRef.classList.add("missed");
-          }
-        }
-      });
+      const charRef = document.querySelector(
+        `li.char[aria-label='${currentChar}']`
+      );
+      charRef.style.backgroundColor = color;
+      if (color === config.colors.missed) {
+        charRef.classList.add("missed");
+      }
     }
 
     if (typedWord === config.currentWord) {
       displayAlert("თქვენ გაიმარჯვეთ", "success");
-      config.stopGame = true;
-      config.prevWords.push(config.currentWord);
-      localStorage.setItem(
-        config.storageKeys.guessedWords,
-        JSON.stringify(config.prevWords)
-      );
+      winAction();
     }
 
     config.currentLine++;
@@ -282,6 +315,30 @@
     );
   }
 
+  function showAnswer() {
+    const tryLeft = config.maxTry - config.currentLine;
+    Swal.fire({
+      title: "ნამდვილად გსურთ პასუხის ხილვა?",
+      text: `დაგრჩათ ${
+        Number.isFinite(tryLeft) ? tryLeft : "უსასრულო რაოდენობის"
+      } ცდა`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "დიახ მაჩვენე!",
+      cancelButtonText: "არა",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        config.showingAnswer = true;
+        winAction();
+        autoFill().catch((err) => {
+          displayAlert("დაფიქსირდა შეცდომა", "error", err.message);
+        });
+      }
+    });
+  }
+
   function actionClear() {
     wordsDisplay.innerHTML = "";
     config.currentLine = 0;
@@ -294,14 +351,79 @@
     });
   }
 
+  function winAction() {
+    config.stopGame = true;
+    config.prevWords.push(config.currentWord);
+    localStorage.setItem(
+      config.storageKeys.guessedWords,
+      JSON.stringify(config.prevWords)
+    );
+  }
+
   function displayAlert(title, icon, text = "", html = "") {
     Swal.fire({ title, icon, text, html });
   }
 
+  function displayToast(title, icon, color, time = 1500) {
+    const Toast = Swal.mixin({
+      toast: true,
+      position: "top-right",
+      iconColor: color,
+      customClass: {
+        popup: "colored-toast",
+      },
+      showConfirmButton: false,
+      timer: time,
+      timerProgressBar: true,
+    });
+    Toast.fire({
+      icon,
+      title,
+    });
+  }
+
   function initSpecialChars() {
-    if (!config.keys[2].includes(config.chars.delete)) {
-      config.keys[2].unshift(config.chars.delete);
+    const lastLine = config.keys.length - 1;
+    if (!config.keys[lastLine].includes(config.chars.delete)) {
+      config.keys[lastLine].unshift(config.chars.delete);
     }
+  }
+
+  function autoFill() {
+    return new Promise((resolve, reject) => {
+      try {
+        const currentContainer = wordsDisplay.children[config.currentLine];
+        const curerntWord = config.currentWord;
+        let index = 0;
+        let interval;
+        interval = setInterval(() => {
+          if (
+            !config.stopGame ||
+            config.currentWord.length - 1 === index ||
+            curerntWord !== config.currentWord
+          ) {
+            clearInterval(interval);
+            setTimeout(() => {
+              if (curerntWord === config.currentWord) {
+                displayAlert("ჰმმ", "question", "შემდგომზე გამოიცნობ");
+              }
+              config.showingAnswer = false;
+              resolve();
+            }, config.delayForCharInput);
+          }
+          const char = config.currentWord[index];
+          const li = document.querySelector(`li.char[aria-label='${char}']`);
+          currentContainer.children[index].textContent = char;
+          currentContainer.children[index].style.backgroundColor =
+            config.colors.success;
+          li.style.backgroundColor = config.colors.success;
+          li.setAttribute("aria-pressed", "true");
+          index++;
+        }, config.delayForCharInput);
+      } catch (err) {
+        reject(err);
+      }
+    });
   }
 
   function initGuessedWords() {
@@ -327,10 +449,12 @@
     config.stopGame = false;
     config.currentLine = 0;
     config.currentWord = "";
+    config.showingAnswer = false;
     const displayedChars = document.querySelectorAll("li.char");
     displayedChars.forEach((char) => {
       char.removeAttribute("style");
       char.classList.remove("missed");
+      char.setAttribute("aria-pressed", "false");
     });
     let randomWord = getRandomWord(config.words);
 
