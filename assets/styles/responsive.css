@@ -6,7 +6,6 @@
   }
 
   main section.game-container {
-    height: 100%;
     width: 100%;
     padding: 0 10px;
     grid-template-rows: 80px 1fr 200px;
@@ -115,5 +114,11 @@
     align-items: center;
     align-content: center;
     gap: 0.5rem;
+  }
+}
+
+@media screen and (max-width: 360px) {
+  main section.game-container {
+    grid-template-rows: 155px 1fr 200px;
   }
 }
