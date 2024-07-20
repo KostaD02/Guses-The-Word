@@ -5,6 +5,8 @@
   const actionButtons = document.querySelectorAll("button[data-action]");
   const modeButtons = document.querySelectorAll("button[data-mode]");
 
+  const audio = new Audio();
+
   const config = {
     prevWords: [],
     stopGame: false,
@@ -13,6 +15,7 @@
     currentWord: "",
     maxTry: Infinity,
     delayForCharInput: 1000,
+    guesses: [],
     chars: {
       delete: "&#8592;",
     },
@@ -57,7 +60,7 @@
       R: "ღ",
       C: "ჩ",
     },
-    words: getWordList(WORLD_LIST),
+    words: getWordList(WORD_LIST),
     colors: {
       success: "rgba(0, 175, 0, 0.5)",
       missed: "rgba(128, 128, 128, 0.5)",
@@ -260,6 +263,41 @@
       const currentChar = currentContainer.children[index].textContent;
       typedWord += currentChar;
       index++;
+    }
+
+    index = 0;
+
+    if (config.guesses.includes(typedWord)) {
+      displayAlert(
+        "განმეორება...",
+        "warning",
+        "",
+        `ეს სიტყვა ცადე უკვე არსებულ პარტიაში, ცადე სხვა სიტყვა. <br> თქვენს მიერ აკრეფილი სიტყვები: ${config.guesses.join()}`
+      );
+      while (currentContainer.children[index]) {
+        currentContainer.children[index].textContent = "";
+        index++;
+      }
+      return;
+    }
+
+    if (!config.words.includes(typedWord)) {
+      displayAlert(
+        "სიტყვა ვერ მოიძებნა",
+        "warning",
+        "",
+        `თქვენს მიერ აკრეფილი სიტყვა ან არ არსებობს ან არ არის მონაცემთა ბაზაში დამატებული, ამიტომ ეს სიტყვა ვერ იქნება პასუხად გამოყენებული. <br> მოძებნილი სიტყვა იყო: <span style="color: orange; font-weight: bold">${typedWord}</span>`
+      );
+      while (currentContainer.children[index]) {
+        currentContainer.children[index].textContent = "";
+        index++;
+      }
+      return;
+    }
+
+    while (currentContainer.children[index]) {
+      const currentChar = currentContainer.children[index].textContent;
+      index++;
       const currentCharIndexInWord = config.currentWord.search(currentChar);
       const color =
         currentCharIndexInWord === -1
@@ -280,9 +318,12 @@
     if (typedWord === config.currentWord) {
       displayAlert("თქვენ გაიმარჯვეთ", "success");
       winAction();
+      playWinSound();
+      return;
     }
 
     config.currentLine++;
+    config.guesses.push(typedWord);
     displayWordSpace(config.currentWord.length);
     setTimeout(() => {
       try {
@@ -297,6 +338,7 @@
         `სიტყვა იყო: <span style="font-weight: bold">${config.currentWord}</span>`
       );
       config.stopGame = true;
+      playLooseSound();
     }
   }
 
@@ -332,9 +374,11 @@
       if (result.isConfirmed) {
         config.showingAnswer = true;
         winAction();
-        autoFill().catch((err) => {
-          displayAlert("დაფიქსირდა შეცდომა", "error", err.message);
-        });
+        autoFill()
+          .then(playLooseSound)
+          .catch((err) => {
+            displayAlert("დაფიქსირდა შეცდომა", "error", err.message);
+          });
       }
     });
   }
@@ -445,18 +489,31 @@
     return [...new Set(words.map((word) => word.trim()))];
   }
 
+  function playWinSound() {
+    audio.src = "assets/sounds/win.mp3";
+    audio.play();
+  }
+
+  function playLooseSound() {
+    audio.src = "assets/sounds/loose.mp3";
+    audio.play();
+  }
+
   function initGame() {
     config.stopGame = false;
     config.currentLine = 0;
     config.currentWord = "";
     config.showingAnswer = false;
+    config.guesses.slice(0);
     const displayedChars = document.querySelectorAll("li.char");
     displayedChars.forEach((char) => {
       char.removeAttribute("style");
       char.classList.remove("missed");
       char.setAttribute("aria-pressed", "false");
     });
+
     let randomWord = getRandomWord(config.words);
+    alert(randomWord);
 
     while (config.prevWords.includes(randomWord)) {
       randomWord = getRandomWord(config.words);
