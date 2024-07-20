@@ -513,7 +513,6 @@
     });
 
     let randomWord = getRandomWord(config.words);
-    alert(randomWord);
 
     while (config.prevWords.includes(randomWord)) {
       randomWord = getRandomWord(config.words);
