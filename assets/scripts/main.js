@@ -281,19 +281,20 @@
       return;
     }
 
-    if (!config.words.includes(typedWord)) {
-      displayAlert(
-        "სიტყვა ვერ მოიძებნა",
-        "warning",
-        "",
-        `თქვენს მიერ აკრეფილი სიტყვა ან არ არსებობს ან არ არის მონაცემთა ბაზაში დამატებული, ამიტომ ეს სიტყვა ვერ იქნება პასუხად გამოყენებული. <br> მოძებნილი სიტყვა იყო: <span style="color: orange; font-weight: bold">${typedWord}</span>`
-      );
-      while (currentContainer.children[index]) {
-        currentContainer.children[index].textContent = "";
-        index++;
-      }
-      return;
-    }
+    // ? Since word list is too short game is too hard
+    // if (!config.words.includes(typedWord)) {
+    //   displayAlert(
+    //     "სიტყვა ვერ მოიძებნა",
+    //     "warning",
+    //     "",
+    //     `თქვენს მიერ აკრეფილი სიტყვა ან არ არსებობს ან არ არის მონაცემთა ბაზაში დამატებული, ამიტომ ეს სიტყვა ვერ იქნება პასუხად გამოყენებული. <br> მოძებნილი სიტყვა იყო: <span style="color: orange; font-weight: bold">${typedWord}</span>`
+    //   );
+    //   while (currentContainer.children[index]) {
+    //     currentContainer.children[index].textContent = "";
+    //     index++;
+    //   }
+    //   return;
+    // }
 
     while (currentContainer.children[index]) {
       const currentChar = currentContainer.children[index].textContent;
